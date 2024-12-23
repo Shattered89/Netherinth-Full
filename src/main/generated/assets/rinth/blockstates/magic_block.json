@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rinth:block/magic_block"
+    }
+  }
+}

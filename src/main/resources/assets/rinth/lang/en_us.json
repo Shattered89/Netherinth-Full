@@ -1,0 +1,55 @@
+{
+  "item.rinth.pink_garnet": "Pink Garnet",
+  "item.rinth.pink_garnet.desc": "A pink gemstone that can be used to craft tools and armor.",
+  "item.rinth.raw_pink_garnet": "Raw Pink Garnet",
+
+  "item.rinth.chisel": "Chisel",
+
+  "item.rinth.lava_nugget": "Lava Nuggets",
+  "item.rinth.starlight_ashes": "Starlight Ashes",
+
+  "block.rinth.pink_garnet_block": "Block of Pink Garnet",
+  "block.rinth.raw_pink_garnet_block": "Block of Raw Pink Garnet",
+
+  "block.rinth.pink_garnet_ore": "Pink Garnet Ore",
+  "block.rinth.pink_garnet_deepslate_ore": "Pink Garnet Deepslate Ore",
+
+  "itemgroup.rinth.pink_garnet_items": "Pink Garnet Items",
+  "itemgroup.rinth.pink_garnet_blocks": "Pink Garnet Blocks",
+  "itemgroup.rinth.netherinth": "Netherinth",
+
+  "item.rinth.pink_garnet_sword": "Pink Garnet Sword",
+    "item.rinth.pink_garnet_pickaxe": "Pink Garnet Pickaxe",
+    "item.rinth.pink_garnet_axe": "Pink Garnet Axe",
+    "item.rinth.pink_garnet_shovel": "Pink Garnet Shovel",
+    "item.rinth.pink_garnet_hoe": "Pink Garnet Hoe",
+
+  "item.rinth.hellfire_sword": "Hellfire Sword",
+    "item.rinth.hellfire_axe": "Hellfire Axe",
+
+  "item.rinth.queen_sword": "Queen Sword",
+  "item.rinth.queen_axe": "Queen Axe",
+
+  "item.rinth.pink_garnet_hammer": "Pink Garnet Hammer",
+
+  "item.rinth.pitch_fork": "Hell Fork",
+
+
+  "block.rinth.magic_block": "Magic Block",
+
+  "block.rinth.pink_garnet_door": "Pink Garnet Door",
+    "block.rinth.pink_garnet_trapdoor": "Pink Garnet Trapdoor",
+
+    "block.rinth.pink_garnet_fence": "Pink Garnet Fence",
+    "block.rinth.pink_garnet_fence_gate": "Pink Garnet Fence Gate",
+
+    "block.rinth.pink_garnet_stairs": "Pink Garnet Stairs",
+    "block.rinth.pink_garnet_slab": "Pink Garnet Slab",
+
+    "block.rinth.pink_garnet_button": "Pink Garnet Button",
+    "block.rinth.pink_garnet_pressure_plate": "Pink Garnet Pressure Plate",
+
+    "block.rinth.pink_garnet_wall": "Pink Garnet Wall",
+
+    "block.rinth.pink_garnet_lamp": "Pink Garnet Lamp"
+}
