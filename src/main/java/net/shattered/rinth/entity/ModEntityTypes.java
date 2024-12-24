@@ -16,8 +16,7 @@ public class ModEntityTypes {
             FabricEntityTypeBuilder.<CustomTridentEntity>create(SpawnGroup.MISC, CustomTridentEntity::new)
                     .dimensions(EntityDimensions.fixed(0.5f, 0.5f))
                     .trackRangeBlocks(4)
-                    .trackedUpdateRate(20)
-                    .forceTrackedVelocityUpdates(true)
+                    .trackedUpdateRate(10)
                     .build()
     );
 

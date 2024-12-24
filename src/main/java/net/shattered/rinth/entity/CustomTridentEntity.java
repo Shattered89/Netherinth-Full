@@ -11,10 +11,11 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -36,7 +37,12 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
     private int chunkX;
     private int chunkZ;
     private boolean isChunkForced = false;
-
+    private void playSoundSafely(Identifier soundId, float volume, float pitch) {
+        SoundEvent soundEvent = Registries.SOUND_EVENT.get(soundId);
+        if (soundEvent != null) {
+            this.playSound(soundEvent, volume, pitch);
+        }
+    }
     // Mob drop storage
     private final MobDropStorage mobDropStorage = new MobDropStorage();
 
@@ -196,7 +202,7 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
             this.setVelocity(this.getVelocity().multiply(0.8).add(vec3d.normalize().multiply(pullStrength)));
 
             if (this.returnTimer == 0) {
-                this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
+                playSoundSafely(Identifier.of("minecraft:item.trident.return"), 10.0F, 1.0F);
             }
             this.returnTimer++;
 
@@ -235,7 +241,7 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
                 double d = 0.05 * (double)i;
                 this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
                 if (this.returnTimer == 0) {
-                    this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
+                    this.playSound(Registries.SOUND_EVENT.get(Identifier.of("minecraft", "item.trident.return")), 10.0F, 1.0F);
                 }
                 this.returnTimer++;
 
@@ -295,7 +301,7 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
         }
 
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
+        playSoundSafely(Identifier.of("minecraft:item.trident.hit"), 10.0F, 1.0F);
     }
 
     private boolean isOwnerAlive() {
@@ -370,7 +376,7 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
 
     @Override
     protected SoundEvent getHitSound() {
-        return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
+        return Registries.SOUND_EVENT.get(Identifier.of("minecraft:item.trident.hit_ground"));
     }
 
     @Override

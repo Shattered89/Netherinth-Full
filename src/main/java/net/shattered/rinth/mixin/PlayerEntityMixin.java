@@ -1,6 +1,5 @@
 package net.shattered.rinth.mixin;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -9,6 +8,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.shattered.rinth.item.custom.CustomTridentItem;
 import net.shattered.rinth.entity.CustomTridentEntity;
+import net.shattered.rinth.networking.ModNetworking;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,6 +33,8 @@ public class PlayerEntityMixin {
             );
             stack.setCount(0);
             cir.setReturnValue(null);
+        } else if (player.getWorld().isClient && stack.getItem() instanceof CustomTridentItem) {
+            ModNetworking.sendTridentDropPacket();
         }
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 import net.shattered.rinth.block.ModBlocks;
 import net.shattered.rinth.command.RecallTridentCommand;
 import net.shattered.rinth.component.ModDataComponentTypes;
+import net.shattered.rinth.entity.ModEntityTypes;
 import net.shattered.rinth.item.ModItemGroups;
 import net.shattered.rinth.item.ModItems;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class Netherinth implements ModInitializer {
 		ModItemGroups.registerModItemGroups();
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
-
+		ModEntityTypes.registerModEntities();
 
 		ModDataComponentTypes.registerModDataComponentTypes();
 
