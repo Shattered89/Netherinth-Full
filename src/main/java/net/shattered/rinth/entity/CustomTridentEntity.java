@@ -20,19 +20,25 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.shattered.rinth.item.ModItems;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomTridentEntity extends PersistentProjectileEntity {
     private static final TrackedData<Byte> LOYALTY = DataTracker.registerData(CustomTridentEntity.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Boolean> ENCHANTED = DataTracker.registerData(CustomTridentEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public static final TrackedData<Boolean> FROM_DROP = DataTracker.registerData(CustomTridentEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_BEING_PULLED = DataTracker.registerData(CustomTridentEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
     private boolean dealtDamage;
     public int returnTimer;
     private boolean isPersistent = false;
     private int chunkX;
     private int chunkZ;
     private boolean isChunkForced = false;
+
+    // Mob drop storage
+    private final MobDropStorage mobDropStorage = new MobDropStorage();
 
     public void setPersistent(boolean persistent) {
         this.isPersistent = persistent;
@@ -108,6 +114,10 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
         this.dataTracker.set(IS_BEING_PULLED, false);
         this.setNoClip(false);
     }
+    public boolean isEnchanted() {
+        return this.dataTracker.get(ENCHANTED);
+    }
+
     @Override
     public void tick() {
         // Check if we need to unforce chunks due to removal
@@ -166,6 +176,7 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
             }
         }
 
+
         Entity entity = this.getOwner();
         boolean fromDrop = this.dataTracker.get(FROM_DROP);
         int i = this.dataTracker.get(LOYALTY);
@@ -188,6 +199,14 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
                 this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
             }
             this.returnTimer++;
+
+            // Attempt to return stored drops
+            if (!this.getWorld().isClient && mobDropStorage.hasDrops() && this.distanceTo(entity) < 2.0) {
+                for (ItemStack drop : mobDropStorage.getStoredMobDrops()) {
+                    ((PlayerEntity)entity).getInventory().insertStack(drop);
+                }
+                mobDropStorage.clearStoredMobDrops();
+            }
 
             if (this.distanceTo(entity) < 2.0) {
                 if (!this.getWorld().isClient) {
@@ -219,10 +238,64 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
                     this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
                 }
                 this.returnTimer++;
+
             }
         }
 
         super.tick();
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        Entity entity = entityHitResult.getEntity();
+        float damage = 18.0F;
+        Entity owner = this.getOwner();
+        DamageSource damageSource = this.getDamageSources().trident(this, (Entity)(owner == null ? this : owner));
+
+        ItemStack weaponStack = this.getWeaponStack();
+        if (weaponStack != null && this.getWorld() instanceof ServerWorld serverWorld) {
+            damage = EnchantmentHelper.getDamage(serverWorld, weaponStack, entity, damageSource, damage);
+        }
+
+        this.dealtDamage = true;
+
+// Check if the entity will die from this hit
+        boolean willDie = entity instanceof LivingEntity livingEntity &&
+                (livingEntity.getHealth() - damage <= 0);
+
+        if (entity.damage(damageSource, damage)) {
+            // Capture drops if the entity dies
+            if (willDie && entity instanceof LivingEntity livingEntity) {
+                List<ItemStack> drops = new ArrayList<>();
+
+                // TODO: Implement actual drop collection logic
+                // This is a placeholder. In a real implementation, you'd use the actual drop logic
+                // For example:
+                // drops.addAll(livingEntity.getDrops());
+
+                if (!drops.isEmpty()) {
+                    mobDropStorage.storeMobDrops(drops);
+                }
+            }
+
+            // Set entity on fire for 100 ticks (5 seconds)
+            entity.setOnFireFor(100);
+
+            if (entity.getType() == EntityType.ENDERMAN) {
+                return;
+            }
+
+            if (entity instanceof LivingEntity livingEntity) {
+                if (weaponStack != null && this.getWorld() instanceof ServerWorld serverWorld) {
+                    EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, weaponStack);
+                }
+                this.knockback(livingEntity, damageSource);
+                this.onHit(livingEntity);
+            }
+        }
+
+        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
+        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
     }
 
     private boolean isOwnerAlive() {
@@ -230,17 +303,96 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
         return entity != null && entity.isAlive() && (!(entity instanceof ServerPlayerEntity) || !entity.isSpectator());
     }
 
-    public boolean isEnchanted() {
-        return this.dataTracker.get(ENCHANTED);
-    }
-
     @Override
     protected boolean tryPickup(PlayerEntity player) {
         // Only allow pickup if the player is the owner
         if (this.isOwner(player)) {
+            // First, return any stored drops to the player
+            if (mobDropStorage.hasDrops()) {
+                for (ItemStack drop : mobDropStorage.getStoredMobDrops()) {
+                    if (!player.getInventory().insertStack(drop)) {
+                        // If inventory is full, drop the item in the world
+                        player.dropItem(drop, false);
+                    }
+                }
+                mobDropStorage.clearStoredMobDrops();
+            }
+
+            // Then try to insert the trident itself
             return player.getInventory().insertStack(this.asItemStack());
         }
         return false;
+    }
+    @Override
+    protected ItemStack getDefaultItemStack() {
+        return null;
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+
+        // Read persistent flag
+        this.isPersistent = nbt.getBoolean("Persistent");
+
+        // Read chunk forcing information
+        this.chunkX = nbt.getInt("ForcedChunkX");
+        this.chunkZ = nbt.getInt("ForcedChunkZ");
+        boolean wasForced = nbt.getBoolean("IsChunkForced");
+
+        if (wasForced) {
+            forceLoadChunk();
+        }
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+
+        // Write persistent flag
+        nbt.putBoolean("Persistent", this.isPersistent);
+
+        // Write chunk forcing information
+        nbt.putInt("ForcedChunkX", chunkX);
+        nbt.putInt("ForcedChunkZ", chunkZ);
+        nbt.putBoolean("IsChunkForced", isChunkForced);
+    }
+
+    private byte getLoyalty(ItemStack stack) {
+        return this.getWorld() instanceof World serverWorld ?
+                (byte)MathHelper.clamp(EnchantmentHelper.getTridentReturnAcceleration((ServerWorld) serverWorld, stack, this), 0, 127) : 0;
+    }
+
+    @Override
+    protected float getDragInWater() {
+        return 0.99F;
+    }
+
+    @Override
+    protected SoundEvent getHitSound() {
+        return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
+    }
+
+    @Override
+    public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
+        return true;
+    }
+
+    @Override
+    public boolean hasNoGravity() {
+        // Disable gravity when in ground to prevent further movement
+        return this.inGround;
+    }
+
+    @Override
+    public boolean isInvulnerable() {
+        // Make the entity invulnerable to damage
+        return true;
+    }
+
+    @Override
+    public void age() {
+        // Override age method to prevent despawning
     }
 
     public static CustomTridentEntity createFromDrop(World world, PlayerEntity player, ItemStack stack) {
@@ -269,120 +421,48 @@ public class CustomTridentEntity extends PersistentProjectileEntity {
         return tridentEntity;
     }
 
-    @Override
-    protected ItemStack getDefaultItemStack() {
-        return new ItemStack(ModItems.PITCHFORK);
-    }
+    // Inner class for mob drop storage
+    public static class MobDropStorage {
+        private final List<ItemStack> storedMobDrops = new ArrayList<>();
 
-    private byte getLoyalty(ItemStack stack) {
-        return this.getWorld() instanceof ServerWorld serverWorld ?
-                (byte)MathHelper.clamp(EnchantmentHelper.getTridentReturnAcceleration(serverWorld, stack, this), 0, 127) : 0;
-    }
-
-    @Override
-    protected float getDragInWater() {
-        return 0.99F;
-    }
-
-    @Override
-    protected SoundEvent getHitSound() {
-        return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
-    }
-
-    @Override
-    public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
-        return true;
-    }
-
-    @Override
-    public boolean hasNoGravity() {
-        // When on ground, disable gravity to prevent further movement
-        return this.inGround;
-    }
-
-    @Override
-    public boolean shouldSave() {
-        // Always return true to ensure the entity is saved with the chunk
-        return true;
-    }
-
-    @Override
-    public boolean isInvulnerable() {
-        // Make the entity invulnerable to damage
-        return true;
-    }
-
-    @Override
-    public void age() {
-        // Override age method to prevent despawning
-    }
-
-    @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
-        float damage = 18.0F;
-        Entity owner = this.getOwner();
-        DamageSource damageSource = this.getDamageSources().trident(this, (Entity)(owner == null ? this : owner));
-
-        ItemStack weaponStack = this.getWeaponStack();
-        if (weaponStack != null && this.getWorld() instanceof ServerWorld serverWorld) {
-            damage = EnchantmentHelper.getDamage(serverWorld, weaponStack, entity, damageSource, damage);
+        /**
+         * Stores a list of item drops from a killed mob
+         * @param drops List of ItemStacks to store
+         */
+        public void storeMobDrops(List<ItemStack> drops) {
+            storedMobDrops.addAll(drops);
         }
 
-        this.dealtDamage = true;
-        if (entity.damage(damageSource, damage)) {
-            // Set entity on fire for 100 ticks (5 seconds)
-            entity.setOnFireFor(100);
-
-            if (entity.getType() == EntityType.ENDERMAN) {
-                return;
-            }
-
-            if (entity instanceof LivingEntity livingEntity) {
-                if (weaponStack != null && this.getWorld() instanceof ServerWorld serverWorld) {
-                    EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, weaponStack);
-                }
-                this.knockback(livingEntity, damageSource);
-                this.onHit(livingEntity);
-            }
+        /**
+         * Retrieves the stored mob drops
+         * @return List of stored ItemStacks
+         */
+        public List<ItemStack> getStoredMobDrops() {
+            return storedMobDrops;
         }
 
-        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
-    }
-
-    @Nullable
-    @Override
-    protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
-        return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
-    }
-
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.dealtDamage = nbt.getBoolean("DealtDamage");
-        this.dataTracker.set(FROM_DROP, nbt.getBoolean("FromDrop"));
-        this.setPersistent(nbt.getBoolean("Persistent"));
-        this.chunkX = nbt.getInt("ForcedChunkX");
-        this.chunkZ = nbt.getInt("ForcedChunkZ");
-        boolean wasForced = nbt.getBoolean("IsChunkForced");
-        if (wasForced) {
-            forceLoadChunk();
+        /**
+         * Clears all stored mob drops
+         */
+        public void clearStoredMobDrops() {
+            storedMobDrops.clear();
         }
-        ItemStack stack = this.getItemStack();
-        if (stack != null) {
-            this.dataTracker.set(LOYALTY, this.getLoyalty(stack));
+
+        /**
+         * Checks if there are any stored drops
+         * @return true if there are drops, false otherwise
+         */
+        public boolean hasDrops() {
+            return !storedMobDrops.isEmpty();
+        }
+
+        /**
+         * Returns the number of stored drops
+         * @return count of stored drops
+         */
+        public int getDropCount() {
+            return storedMobDrops.size();
         }
     }
 
-    @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putBoolean("DealtDamage", this.dealtDamage);
-        nbt.putBoolean("FromDrop", this.dataTracker.get(FROM_DROP));
-        nbt.putBoolean("Persistent", this.isPersistent);
-        nbt.putInt("ForcedChunkX", chunkX);
-        nbt.putInt("ForcedChunkZ", chunkZ);
-        nbt.putBoolean("IsChunkForced", isChunkForced);
-    }
 }
