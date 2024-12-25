@@ -21,6 +21,10 @@ import net.shattered.rinth.item.custom.HammerItem;
 import static net.shattered.rinth.Netherinth.MOD_ID;
 
 public class ModItems {
+
+    //corey's necklace
+    public static final Item CONDUIT_HEART = registerItem("conduit_heart", new Item(new Item.Settings()));
+
     public static final Item PINK_GARNET = registerItem("pink_garnet", new Item(new Item.Settings()));
     public static final Item RAW_PINK_GARNET = registerItem("raw_pink_garnet", new Item(new Item.Settings()));
 

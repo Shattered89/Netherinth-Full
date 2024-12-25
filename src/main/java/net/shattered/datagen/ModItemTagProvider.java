@@ -46,6 +46,5 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ModItems.QUEEN_SWORD);
         getOrCreateTagBuilder(ItemTags.AXES)
                 .add(ModItems.QUEEN_AXE);
-
     }
 }

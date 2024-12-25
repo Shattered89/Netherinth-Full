@@ -23,7 +23,6 @@ public class RecallTridentCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 CommandManager.literal("recalltrident")
-                        .requires(source -> source.hasPermissionLevel(4))
                         .executes(RecallTridentCommand::run)
         );
     }

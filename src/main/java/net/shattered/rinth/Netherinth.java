@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.util.Identifier;
 import net.shattered.rinth.block.ModBlocks;
 import net.shattered.rinth.command.RecallTridentCommand;
+import net.shattered.rinth.command.SpreadNetherCommand;
 import net.shattered.rinth.component.ModDataComponentTypes;
 import net.shattered.rinth.entity.ModEntityTypes;
 import net.shattered.rinth.item.ModItemGroups;
@@ -33,9 +34,12 @@ public class Netherinth implements ModInitializer {
 		FuelRegistry.INSTANCE.add(ModItems.STARLIGHT_ASHES, 2400);
 
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
-				RecallTridentCommand.register(dispatcher, registryAccess, environment));
-		RightClickTracker.register();
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			RecallTridentCommand.register(dispatcher, registryAccess, environment);
+			SpreadNetherCommand.register(dispatcher, registryAccess, environment);
+		});
+
+
 
 	}
 }
