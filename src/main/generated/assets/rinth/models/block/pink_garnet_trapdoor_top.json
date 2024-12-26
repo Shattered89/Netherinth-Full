@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_trapdoor_top",
-  "textures": {
-    "texture": "rinth:block/pink_garnet_trapdoor"
-  }
-}

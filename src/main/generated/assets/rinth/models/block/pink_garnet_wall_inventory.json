@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/wall_inventory",
-  "textures": {
-    "wall": "rinth:block/pink_garnet_block"
-  }
-}

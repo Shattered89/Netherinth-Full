@@ -1,7 +1,0 @@
-// 1.21.1	2024-12-21T10:10:33.7863118	Netherinth/Tags for minecraft:block
-c10409bdba45c82aaf50e75744a129b34129d6dd data\minecraft\tags\block\fence_gates.json
-aef50bced19679b3b199cde134cd0d6ed045e406 data\minecraft\tags\block\mineable\pickaxe.json
-be64f4464a919f848bd2a3fb9a29b76dbd5c3b54 data\minecraft\tags\block\fences.json
-be386299be4b7f831ad6a1d15e7c44daec6292e9 data\minecraft\tags\block\walls.json
-a249c46329a41538f49a564e1f14338aaf1be5a0 data\rinth\tags\block\needs_pink_garnet_tool.json
-0af8ec0691b0a131ecd42f5b4bfaa609cb09ad54 data\minecraft\tags\block\needs_diamond_tool.json
