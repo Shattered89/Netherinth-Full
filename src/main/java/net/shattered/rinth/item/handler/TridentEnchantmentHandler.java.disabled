@@ -1,0 +1,86 @@
+package net.shattered.rinth.item.handler;
+
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
+import net.shattered.rinth.item.custom.UpgradedTridentItem;
+import org.lwjgl.glfw.GLFW;
+
+public class TridentEnchantmentHandler {
+    private static double lastScrollY = 0;
+
+    public static void init() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.player != null) {
+                handleScrollEvent(client);
+            }
+        });
+    }
+
+    private static void handleScrollEvent(MinecraftClient client) {
+        // Check if player is holding shift
+        if (!isShiftPressed()) {
+            return;
+        }
+
+        // Get main hand item
+        ItemStack stack = client.player.getMainHandStack();
+        if (!(stack.getItem() instanceof UpgradedTridentItem)) {
+            return;
+        }
+
+        double currentScroll = client.mouse.getY();
+        double scrollDelta = currentScroll - lastScrollY;
+        lastScrollY = currentScroll;
+
+        if (scrollDelta == 0) return;
+
+        // Toggle between max Loyalty and max Riptide
+        toggleEnchantment(stack, client);
+    }
+
+    private static boolean isShiftPressed() {
+        return GLFW.glfwGetKey(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS ||
+                GLFW.glfwGetKey(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
+    }
+
+    private static void toggleEnchantment(ItemStack stack, MinecraftClient client) {
+        // Create new ItemStack with same item
+        ItemStack newStack = new ItemStack(stack.getItem(), 1);
+        newStack.setDamage(stack.getDamage());
+
+        // Check current enchantment
+        var loyaltyEntry = Registries.ENCHANTMENT_PROVIDER_TYPE.get( Identifier.of("minecraft:loyalty"));
+        var riptideEntry = Registries.ENCHANTMENT_PROVIDER_TYPE.get( Identifier.of("minecraft:riptide"));
+
+        if (EnchantmentHelper.getLevel((RegistryEntry<Enchantment>) loyaltyEntry, stack) > 0) {
+            // Switch to Riptide III
+            newStack.addEnchantment((RegistryEntry<Enchantment>) riptideEntry, 3);
+            sendEnchantMessage(client, "Riptide III");
+        } else {
+            // Switch to Loyalty III
+            newStack.addEnchantment((RegistryEntry<Enchantment>) loyaltyEntry, 3);
+            sendEnchantMessage(client, "Loyalty III");
+        }
+
+        // Replace the stack in player's hand
+        client.player.setStackInHand(client.player.getActiveHand(), newStack);
+    }
+
+    private static void sendEnchantMessage(MinecraftClient client, String enchantName) {
+        if (client.player != null) {
+            client.player.sendMessage(
+                    Text.literal("Enchantment changed to: ")
+                            .append(Text.literal(enchantName).formatted(Formatting.AQUA)),
+                    true
+            );
+        }
+    }
+}

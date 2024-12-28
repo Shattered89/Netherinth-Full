@@ -53,8 +53,6 @@ dependencies {
 
 	//Addon mods, that you must have
 	modImplementation "maven.modrinth:trinkets:JagCscwi"
-	modImplementation "maven.modrinth:mmmmmmmmmmmm:d1TKoLnB"
-	modImplementation "maven.modrinth:moonlight:F7VRCvQQ"
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
 	include "org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}"
