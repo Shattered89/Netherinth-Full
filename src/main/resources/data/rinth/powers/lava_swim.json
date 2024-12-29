@@ -1,0 +1,19 @@
+{
+    "name": "Lava Swimming",
+    "description": "You can swim in lava.",
+    "badges": [
+        {
+			"icon": {
+				"item": "minecraft:lava_bucket"
+			},
+			"sprite": "minecraft:textures/item/lava_bucket.png",
+			"text": "Passive"
+		}
+    ],
+    "type": "origins:swimming",
+    "condition": {
+        "type": "origins:submerged_in",
+        "fluid": "lava"
+    }
+
+}

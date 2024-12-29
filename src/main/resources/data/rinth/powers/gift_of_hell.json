@@ -1,0 +1,31 @@
+{
+    "name": "Gift of Hell",
+    "description": "You are gifted a demon fork, do what you must, maybe a star will make it sronger?",
+        "badges": [
+            {
+                "icon": {
+                    "item": "rinth:starlight_ashes"
+                },
+                "sprite": "rinth:textures/item/starlight_ashes.png",
+                "text": "Hm..."
+            }
+        ],
+    "type": "origins:multiple",
+    "pitchfork":{
+        "type": "origins:action_on_callback",
+        "entity_action_chosen": {
+                "type": "origins:execute_command",
+                "command": "give @s rinth:pitch_fork[enchantments={levels:{loyalty:3}}]"
+    }
+
+
+        },
+        "destory_pitchfork":{
+        "type": "origins:action_on_callback",
+        "entity_action_chosen": {
+                "type": "origins:execute_command",
+                "command": "kill @e[type=rinth:custom_trident]"
+}
+    }
+}
+

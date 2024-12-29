@@ -1,0 +1,6 @@
+{
+	"type": "origins:particle",
+	"particle": "minecraft:dripping_lava",
+	"frequency": 1,
+	"hidden": true
+}

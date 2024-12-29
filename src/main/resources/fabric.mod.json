@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "rinth",
+	"version": "${version}",
+	"name": "Netherinth",
+	"description": "NETHER!",
+	"authors": [
+		"Shattered_"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/project/netherinth",
+		"sources": "https://github.com/Shattered89/Netherith"
+	},
+	"license": "MIT",
+	"icon": "assets/rinth/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.shattered.rinth.Netherinth"
+		],
+		"fabric-datagen": [
+			"net.shattered.rinth.NetherinthDataGenerator"
+		],
+		"client": [
+			"net.shattered.rinth.NetherinthClient"
+		]
+	},
+	"mixins": [
+		"rinth.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

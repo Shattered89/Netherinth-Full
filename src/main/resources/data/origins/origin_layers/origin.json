@@ -1,0 +1,7 @@
+{
+  "origins": [
+    "rinth:rinth"
+  ],
+  "enabled": true,
+  "replace": false
+}

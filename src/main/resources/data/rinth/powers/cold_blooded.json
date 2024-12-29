@@ -1,0 +1,21 @@
+{
+    "name": "Cold Blooded",
+    "description": "You have weakness in cold environments",
+    "type": "origins:stacking_status_effect",
+    "min_stacks": 1,
+    "max_stacks": 1,
+    "duration_per_stack": 20,
+    "effect": 
+        {
+            "id": "minecraft:weakness",
+            "is_ambient": true,
+            "show_particles": false,
+            "show_icon": true
+        },
+        "condition": {
+            "type": "origins:exposed_to_sun",
+            "exposure": "cold"
+            
+        }
+}
+    

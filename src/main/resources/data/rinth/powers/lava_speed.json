@@ -1,0 +1,10 @@
+{
+    "hidden": true,
+    "type": "origins:modify_lava_speed",
+    "modifier": {
+    "id": "",
+    "operation": "ADD_VALUE",
+    "amount": 0.4125,
+    "value": 0
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/trident_throwing",
+  "textures": {
+    "particle": "rinth:item/pitch_fork"
+  }
+}

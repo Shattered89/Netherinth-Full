@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:nether_star"
+  },
+  "base": {
+    "item": "rinth:pitch_fork"
+  },
+  "result": {
+    "count": 1,
+    "id": "rinth:upgraded_trident"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

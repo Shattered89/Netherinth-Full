@@ -1,0 +1,31 @@
+{
+	"replace": false,
+	"values": [
+		"minecraft:beef",
+		"minecraft:chicken",
+		"minecraft:clay",
+		"minecraft:clay_ball",
+		"#coal_ores",
+		"minecraft:cod",
+		"#copper_ores",
+		"#gold_ores",
+		"#lapis_ores",
+		"#iron_ores",
+		"minecraft:kelp",
+		"#logs_that_burn",
+		"minecraft:mutton",
+		"minecraft:netherrack",
+		"minecraft:nether_quartz_ore",
+		"minecraft:porkchop",
+		"minecraft:potato",
+		"minecraft:rabbit",
+		"minecraft:raw_copper",
+		"minecraft:raw_gold",
+		"minecraft:raw_iron",
+		"#redstone_ores",
+		"minecraft:salmon",
+		"#sand",
+		"#stone_crafting_materials",
+		"minecraft:wet_sponge"
+	]
+}

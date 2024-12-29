@@ -1,0 +1,8 @@
+{
+    "name": "Nether spawn",
+    "description": "You spawn in the Nether.",
+    "type": "origins:modify_player_spawn",
+    "dimension": "minecraft:the_nether",
+    "biome": "minecraft:warped_forest",
+    "spawn_strategy": "center"
+}

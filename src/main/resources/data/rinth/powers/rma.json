@@ -1,0 +1,127 @@
+{
+    "name": "Nether Allies",
+    "description": "Most nether mobs will be passive, unless hit.",
+    "badges": [
+        {
+            "icon": {
+                "item": "minecraft:banners"
+            },
+            "sprite": "minecraft:textures/atlas/map_decorations.png",
+            "text": "TROOPS"
+        }
+    ],
+    "type": "origins:multiple",
+    "rma_cleanup": {
+        "type": "origins:action_over_time",
+        "interval": 1,
+        "entity_action": {
+            "type": "origins:and",
+            "actions": [
+                {
+                    "type": "origins:revoke_power",
+                    "power": "rinth:rma_tick_timer",
+                    "source": "rinth:rinth"
+                },
+                {
+                    "type": "origins:change_resource",
+                    "resource": "rinth:rma_rma_timer",
+                    "operation": "set",
+                    "change": 0
+                },
+                {
+                    "type": "origins:execute_command",
+                    "command": "team add allied_mobs"
+                },
+                {
+                    "type": "origins:execute_command",
+                    "command": "team join allied_mobs @s"
+                },
+                {
+                    "type": "origins:revoke_power",
+                    "power": "*:rma_rma_cleanup",
+                    "source": "rinth:rinth"
+                }
+            ]
+        }
+    },
+    "rma_timer": {
+        "type": "origins:resource",
+        "max": 600,
+        "min": 0,
+        "start_value": 0,
+        "hud_render": {
+            "should_render": false,
+            "sprite_location": "origins:textures/gui/resource_bar.png",
+            "bar_index": 4
+        },
+        "max_action": {
+            "type": "origins:grant_power",
+            "power": "*:rma_rma_cleanup",
+            "source": "rinth:rinth"
+        }
+    },
+    "rma_collect": {
+        "type": "origins:action_over_time",
+        "interval": 5,
+        "entity_action": {
+            "type": "origins:execute_command",
+            "command": "team join allied_mobs @e[type=#rinth:allied_mobs]"
+        }
+    },
+    "rma_trigger_mobs_on_hit": {
+        "type": "origins:action_on_hit",
+        "bientity_condition": {
+            "type": "origins:target_condition",
+            "condition": {
+                "type": "origins:in_tag",
+                "tag": "rinth:allied_mobs"
+            }
+        },
+        "bientity_action": {
+            "type": "origins:actor_action",
+            "action": {
+                "type": "origins:and",
+                "actions": [
+                    {
+                        "type": "origins:execute_command",
+                        "command": "team leave @s[team=allied_mobs]"
+                    },
+                    {
+                        "type": "origins:grant_power",
+                        "power": "rinth:rma_tick_timer",
+                        "source": "rinth:rinth"
+                    }
+                ]
+            }
+        }
+    },
+    "rma_reset_timer_on_hit": {
+        "type": "origins:action_on_hit",
+        "bientity_condition": {
+            "type": "origins:target_condition",
+            "condition": {
+                "type": "origins:in_tag",
+                "tag": "rinth:allied_mobs"
+            }
+        },
+        "bientity_action": {
+            "type": "origins:actor_action",
+            "action": {
+                "type": "origins:change_resource",
+                "resource": "rinth:rma_rma_timer",
+                "operation": "set",
+                "change": 0
+            }
+        }
+    },
+    "tick_timer": {
+        "type": "origins:action_over_time",
+        "interval": 1,
+        "entity_action": {
+            "type": "origins:change_resource",
+            "resource": "rinth:rma_rma_timer",
+            "operation": "add",
+            "change": 1
+        }
+    }
+}

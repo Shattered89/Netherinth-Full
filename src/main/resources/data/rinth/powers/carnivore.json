@@ -1,0 +1,36 @@
+{
+    "name": "Carnivore",
+    "description": "You can only eat meat",
+    "type": "origins:prevent_item_use",
+	"badges": [
+		{
+			"icon": {
+				"item": "minecraft:cooked_beef"
+			},
+			"sprite": "minecraft:textures/item/cooked_beef.png",
+			"text": "Passive"
+		}
+	],
+	"item_condition": {
+		"type": "origins:all_of",
+		"conditions": [
+			{
+				"type": "origins:ingredient",
+				"ingredient": {
+					"tag": "origins:ignore_diet"
+				},
+				"inverted": true
+			},
+			{
+				"type": "origins:ingredient",
+				"ingredient": {
+					"tag": "origins:meat"
+				},
+				"inverted": true
+			},
+			{
+				"type": "origins:food"
+			}
+		]
+	}
+}

@@ -1,0 +1,9 @@
+{
+    "hidden": true,
+    "type": "origins:shaking",
+    "condition": {
+        "type": "origins:dimension",
+        "dimension": "minecraft:the_nether",
+        "inverted": true
+    }
+}

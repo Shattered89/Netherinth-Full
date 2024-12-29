@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "rinth:block/pink_garnet_slab"
+    },
+    "type=double": {
+      "model": "rinth:block/pink_garnet_block"
+    },
+    "type=top": {
+      "model": "rinth:block/pink_garnet_slab_top"
+    }
+  }
+}

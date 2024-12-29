@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "pink_garnet",
+  "ingredient": {
+    "item": "rinth:pink_garnet_ore"
+  },
+  "result": {
+    "id": "rinth:pink_garnet"
+  }
+}

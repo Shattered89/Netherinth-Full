@@ -1,0 +1,29 @@
+{
+	"type": "origins:action_over_time",
+	"interval": 5,
+	"entity_action": {
+		"type": "origins:execute_command",
+		"command": "execute as @s run function rinth:smelt"
+	},
+	"condition": {
+		"type": "origins:equipped_item",
+		"equipment_slot": "offhand",
+		"item_condition": {
+			"type": "origins:ingredient",
+			"ingredient": {
+				"tag": "rinth:hand_smeltable"
+			}
+		}
+	},
+	"name": "Hot Touch",
+	"description": "Your hands are hot enough to smelt certain items at a rate of 4/sec. They aren't hot enough to smelt everything, sadly...",
+	"badges": [
+		{
+			"icon": {
+				"item": "minecraft:flint_and_steel"
+			},
+			"sprite": "minecraft:textures/item/flint_and_steel.png",
+			"text": "Passive"
+		}
+	]
+}

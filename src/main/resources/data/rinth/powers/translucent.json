@@ -1,0 +1,10 @@
+{
+    "hidden": true,
+    "type": "origins:model_color",
+    "alpha": 0.5,
+    "condition": {
+        "type": "origins:dimension",
+        "dimension": "minecraft:the_nether",
+        "inverted": true
+    }
+}

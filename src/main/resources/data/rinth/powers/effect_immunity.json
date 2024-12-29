@@ -1,0 +1,16 @@
+{
+    "name": "Effect Immunity",
+    "description": "You are immune to all negative nether effects.",
+    "type": "origins:effect_immunity",
+    "badges": [
+        {
+			"icon": {
+				"item": "minecraft:netherrack"
+			},
+			"sprite": "minecraft:textures/block/netherrack.png",
+			"text": "Spawn"
+		}
+    ],
+    "effect": "minecraft:wither"
+
+}

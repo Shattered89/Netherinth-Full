@@ -1,0 +1,6 @@
+{
+	"type": "origins:particle",
+	"particle": "minecraft:lava",
+	"frequency": 4,
+	"hidden": true
+}

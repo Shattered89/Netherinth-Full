@@ -1,0 +1,35 @@
+{
+      "name":"Netherinth",
+      "description":"You are a being of the Nether",
+      "powers":[
+            "rinth:nether_spawn",
+            "rinth:lava_swim",
+            "rinth:lava_speed",
+            "origins:strong_arms_break_speed",
+            "rinth:effect_immunity",
+            "rinth:shake",
+            "rinth:translucent",
+            "rinth:carnivore",
+            "rinth:fire_immunity",
+            "rinth:rma",
+            "origins:more_exhaustion",
+            "rinth:particle",
+            "rinth:particle1",
+            "rinth:smelt_mainhand",
+            "rinth:mlg",
+            "rinth:trasnform",
+            "rinth:height",
+            "rinth:width",
+            "rinth:cold_blooded",
+            "rinth:gift_of_hell",
+            "rinth:recall",
+            "rinth:nether_dependency"
+            
+      ],
+      "icon": {
+         "id": "minecraft:gilded_blackstone"
+     },
+      "impact":3,
+      "loading_priority": 9999
+   }
+   

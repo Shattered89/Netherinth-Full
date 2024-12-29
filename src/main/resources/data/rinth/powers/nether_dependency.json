@@ -1,0 +1,66 @@
+{
+    "name": "Nether Dependency",
+    "description": "You must return to the Nether regularly or you will turn to stone",
+    "type": "origins:multiple",
+    "timer": {
+        "type": "origins:resource",
+        "min": 0,
+        "max": 30000,
+        "hud_render": {
+            "sprite_location": "rinth:textures/gui/community/electrictaco/resource_bar_2.png",
+            "bar_index": 20,
+            "should_render": true,
+            "visible": true
+        }
+    },
+    "drain": {
+        "type": "origins:action_over_time",
+        "interval": 20,
+        "entity_action": {
+            "type": "origins:change_resource",
+            "resource": "*:*_timer",
+            "change": -1
+        },
+        "condition": {
+            "type": "origins:dimension",
+            "dimension": "minecraft:overworld"
+        }
+    },
+    "restore": {
+        "type": "origins:action_over_time",
+        "interval": 20,
+        "entity_action": {
+            "type": "origins:change_resource",
+            "resource": "*:*_timer",
+            "change": 200
+        },
+        "condition": {
+            "type": "origins:dimension",
+            "dimension": "minecraft:the_nether"
+        }
+    },
+    "death": {
+        "type": "origins:action_over_time",
+        "interval": 20,
+        "entity_action": {
+            "type": "origins:and",
+            "actions": [
+                {
+                    "type": "origins:execute_command",
+                    "command": "particle minecraft:ash ~ ~1 ~ 0.3 0.5 0.3 0.1 50"
+                },
+                {
+                    "type": "origins:damage",
+                    "amount": 100,
+                    "damage_type": "minecraft:generic"
+                }
+            ]
+        },
+        "condition": {
+            "type": "origins:resource",
+            "resource": "*:*_timer",
+            "comparison": "==",
+            "compare_to": 0
+        }
+    }
+}
