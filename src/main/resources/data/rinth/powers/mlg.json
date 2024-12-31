@@ -1,16 +1,6 @@
 {
-    "name":"Mlg",
-    "description":"LAVA MLG",
-    "type": "origins:action_over_time",
-    "entity_action": {
-        "type": "apoli:set_fall_distance",
-        "fall_distance": 0
-    },
-    "condition": {
-        "type": "origins:in_block",
-        "block_condition": {
-            "type": "origins:block",
-            "block": "minecraft:lava"
-        }
-    }
+    "name": "Lava Landing",
+    "description": "You never take fall damage",
+    "type": "origins:modify_falling",
+    "take_fall_damage": false
 }

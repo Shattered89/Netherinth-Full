@@ -70,6 +70,31 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         RecipeProvider.conditionsFromItem(ModItems.PITCHFORK))
                 .offerTo(recipeExporter, Identifier.of(Netherinth.MOD_ID, "upgraded_trident_smithing"));
 
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.CONDUIT_HEART_FRAGMENT)
+                .pattern(" I ")
+                .pattern("I I")
+                .pattern(" N ")
+                .input('I', Items.IRON_INGOT)
+                .input('N', Items.IRON_NUGGET)
+                .criterion(hasItem(ModItems.CONDUIT_HEART), conditionsFromItem(ModItems.CONDUIT_HEART))
+                .offerTo(recipeExporter);
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.CONDUIT_HEART_SHARD)
+                .pattern(" T ")
+                .pattern("TST")
+                .pattern(" T ")
+                .input('T', Items.TURTLE_SCUTE)
+                .input('S', Items.HEART_OF_THE_SEA)
+                .criterion(hasItem(ModItems.CONDUIT_HEART), conditionsFromItem(ModItems.CONDUIT_HEART))
+                .offerTo(recipeExporter);
+
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.CONDUIT_HEART, 1
+        ).input(ModItems.CONDUIT_HEART_FRAGMENT
+        ).input(ModItems.CONDUIT_HEART_SHARD
+        ).criterion(hasItem(ModItems.CONDUIT_HEART_FRAGMENT), conditionsFromItem(ModItems.CONDUIT_HEART_FRAGMENT)
+        ).criterion(hasItem(ModItems.CONDUIT_HEART_SHARD), conditionsFromItem(ModItems.CONDUIT_HEART_SHARD)
+        ).offerTo(recipeExporter);
+
 
 
 

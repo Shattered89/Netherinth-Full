@@ -57,6 +57,8 @@
   "item.rinth.conduit_heart": "Conduit Heart",
   "item.rinth.powered_conduit_heart": "Powered Conduit Heart",
   "item.rinth.conduit_heart.powered": "Enchanted by Conduit Power",
+  "item.rinth.conduit_heart_fragment": "Conduit Heart Fragment",
+    "item.rinth.conduit_heart_shard": "Conduit Heart Shard",
 
   "item.rinth.upgraded_trident": "Nether Star Trident",
   "item.rinth.upgraded_trident.tooltip": "Infused with the power of 30 Nether Stars",

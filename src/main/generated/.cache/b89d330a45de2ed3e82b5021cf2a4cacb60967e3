@@ -1,4 +1,4 @@
-// 1.21.1	2024-12-27T21:46:17.1221094	Netherinth/Model Definitions
+// 1.21.1	2024-12-30T18:24:35.1840717	Netherinth/Model Definitions
 5b7d3625ac44abff21796687d498d4d3368c480a assets\rinth\models\block\pink_garnet_ore.json
 7fa35e76503b012e58fabacfd6b1d2339b198b2b assets\rinth\models\item\pink_garnet_fence_gate.json
 d501296cb053d5b6c145a293d537d431f4a6a606 assets\rinth\models\block\pink_garnet_button_inventory.json
@@ -18,6 +18,7 @@ b7574459a2878e3407e500a1ef588fdac76511b6 assets\rinth\models\item\pink_garnet_bl
 bb83b4d69a02fc88b6e92d39aa3cfc101b520c8a assets\rinth\models\block\pink_garnet_fence_gate_wall.json
 5ee40a423241292e44caeeb48bc966b4538a7561 assets\rinth\blockstates\pink_garnet_wall.json
 de5237f6b60fc964b41e0024aa7ede1940d65e62 assets\rinth\models\item\golden_ring.json
+fbed0e20f6b46d9974c80cdcb1c5bceda1e4b352 assets\rinth\models\item\conduit_heart_shard.json
 a08a9198bd353182cf8df0d3f4e9a7c934da86b5 assets\rinth\models\block\pink_garnet_lamp_on.json
 a28ecf910802b2ae5aebd3fb4e593620546e3354 assets\rinth\models\block\pink_garnet_trapdoor_open.json
 67c8d3bae0eae572f1000f0a0bbe61442f90fc7a assets\rinth\models\item\magic_block.json
@@ -36,8 +37,8 @@ b8e156fe9795183d8f6f4d2774da9793cd96e876 assets\rinth\models\item\pink_garnet_de
 87413a04f48d4011988996eccad9356f4d732da9 assets\rinth\blockstates\pink_garnet_fence.json
 ae5ac8151b4721f4ace08847ddec66f11484c741 assets\rinth\blockstates\raw_pink_garnet_block.json
 905e9af19ece5b3754c181f06426326d8c51adf0 assets\rinth\models\block\pink_garnet_block.json
-72d61cb136e42249b124abeb15f377032cb78712 assets\rinth\models\block\pink_garnet_button.json
 92b2ff231ee21277a578173af8fb391d46f92d4a assets\rinth\models\block\pink_garnet_door_bottom_right.json
+72d61cb136e42249b124abeb15f377032cb78712 assets\rinth\models\block\pink_garnet_button.json
 9e120a4801e4afe78bfca14c547ff0cee3d27df7 assets\rinth\models\block\pink_garnet_fence_gate.json
 2c8040836776c098cc91e223b5300ffd7f4b89f2 assets\rinth\models\item\pink_garnet_sword.json
 ce2a77935753b7c76b8529e69bb634ee09449b75 assets\rinth\blockstates\pink_garnet_trapdoor.json
@@ -80,3 +81,4 @@ f3429b00f04052c08a17b6d30201e4f0b7558d7a assets\rinth\models\block\pink_garnet_w
 2cd8f268133fa3beeabe527dc72083ca1c196ca6 assets\rinth\models\block\pink_garnet_fence_side.json
 330ac3644549cacf7761c41b3f641f09100ed3de assets\rinth\models\block\pink_garnet_trapdoor_top.json
 3cca44fd6ca1b8af32085bfb32467055f9ee7c51 assets\rinth\models\block\pink_garnet_wall_side_tall.json
+13e46f8e8901f55271d072d7258c3ed6c172584a assets\rinth\models\item\conduit_heart_fragment.json

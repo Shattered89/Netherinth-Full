@@ -1,0 +1,47 @@
+package net.shattered.rinth.util;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+
+public class WeaponModeHelper {
+
+    public static void toggleEnchantmentMode(ItemStack stack, PlayerEntity player, World world) {
+        if (!world.isClient) {
+            // Get RegistryEntry for both enchantments
+            RegistryEntry<Enchantment> loyaltyEntry = player.getWorld().getRegistryManager()
+                    .get(RegistryKeys.ENCHANTMENT)
+                    .getEntry(Enchantments.LOYALTY)
+                    .get();
+
+            RegistryEntry<Enchantment> riptideEntry = player.getWorld().getRegistryManager()
+                    .get(RegistryKeys.ENCHANTMENT)
+                    .getEntry(Enchantments.RIPTIDE)
+                    .get();
+
+            // Check current enchantment
+            int loyaltyLevel = EnchantmentHelper.getLevel(loyaltyEntry, stack);
+
+            // Create a new enchantment component
+            EnchantmentHelper.apply(stack, builder -> {
+                if (loyaltyLevel > 0) {
+                    // If it has Loyalty, just add Riptide
+                    builder.add(riptideEntry, 3);
+                    player.sendMessage(Text.literal("Switched to Riptide III"), true);
+                } else {
+                    // Otherwise add Loyalty
+                    builder.add(loyaltyEntry, 3);
+                    player.sendMessage(Text.literal("Switched to Loyalty III"), true);
+                }
+            });
+        }
+    }
+}

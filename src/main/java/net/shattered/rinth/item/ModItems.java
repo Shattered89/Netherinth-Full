@@ -22,6 +22,11 @@ public class ModItems {
     public static final Item CONDUIT_HEART = registerItem("conduit_heart",
             new ConduitHeartItem(new Item.Settings(), false));
 
+    public static final Item CONDUIT_HEART_FRAGMENT = registerItem("conduit_heart_fragment",
+            new Item(new Item.Settings()));
+    public static final Item CONDUIT_HEART_SHARD = registerItem("conduit_heart_shard",
+            new Item(new Item.Settings()));
+
     public static final Item POWERED_CONDUIT_HEART = registerItem("powered_conduit_heart",
             new ConduitHeartItem(new Item.Settings(), true));
 
