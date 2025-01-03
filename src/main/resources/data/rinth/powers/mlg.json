@@ -1,6 +1,0 @@
-{
-    "name": "Lava Landing",
-    "description": "You never take fall damage",
-    "type": "origins:modify_falling",
-    "take_fall_damage": false
-}

@@ -11,7 +11,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -48,26 +47,44 @@ public class UpgradeableTridentEntity extends CustomTridentEntity {
 
     @Override
     public void tick() {
+        // Handle loyalty return behavior
+        if (this.dealtDamage && this.getWorld() instanceof ServerWorld serverWorld) {
+            Entity owner = this.getOwner();
+            if (owner instanceof PlayerEntity) {
+                int loyaltyLevel = EnchantmentHelper.getTridentReturnAcceleration(serverWorld, this.getItemStack(), this);
+                if (loyaltyLevel > 0) {
+                    this.startPulling();
+                    // Reduce return speed by setting a lower velocity
+                    Vec3d vec3d = owner.getEyePos().subtract(this.getPos());
+                    this.setPos(this.getX(), this.getY() + vec3d.y * 0.015D * loyaltyLevel, this.getZ());
+                    if (this.getWorld().isClient) {
+                        this.lastRenderY = this.getY();
+                    }
+
+                    double d = 0.05D * loyaltyLevel; // Reduced from vanilla's 0.1D
+                    this.setVelocity(this.getVelocity().multiply(0.95D).add(
+                            vec3d.normalize().multiply(d)
+                    ));
+                }
+            }
+        }
+
+        // Handle homing behavior
         if (!this.inGround && !this.dealtDamage && this.getOwner() != null) {
-            // Only seek targets if we haven't hit anything yet
-            // Find nearest target
             LivingEntity target = findNearestTarget();
 
             if (target != null) {
-                // Get position to aim at (center of target)
                 Vec3d targetPos = target.getPos().add(0, target.getHeight() * 0.5, 0);
                 Vec3d currentPos = this.getPos();
                 Vec3d toTarget = targetPos.subtract(currentPos).normalize();
 
-                // Set new velocity towards target
                 Vec3d currentVel = this.getVelocity();
-                double speed = Math.max(currentVel.length(), 0.1); // Avoid zero-length velocity
+                double speed = Math.max(currentVel.length(), 0.1);
                 Vec3d newVel = toTarget.multiply(speed * HOMING_SPEED);
 
                 this.setVelocity(newVel);
 
-                // Debug particles to show target location
-                if (this.getWorld().isClient && this.age % 10 == 0) { // Reduce frequency
+                if (this.getWorld().isClient && this.age % 10 == 0) {
                     this.getWorld().addParticle(
                             ParticleTypes.SOUL_FIRE_FLAME,
                             target.getX(),
@@ -77,8 +94,7 @@ public class UpgradeableTridentEntity extends CustomTridentEntity {
                     );
                 }
 
-                // Debug message for owner
-                if (this.getOwner() instanceof PlayerEntity player && this.age % 20 == 0) { // Reduce message spam
+                if (this.getOwner() instanceof PlayerEntity player && this.age % 20 == 0) {
                     player.sendMessage(Text.literal("Tracking target: " + target.getName().getString()), true);
                 }
             }
@@ -86,7 +102,6 @@ public class UpgradeableTridentEntity extends CustomTridentEntity {
 
         super.tick();
 
-        // Add special particle effects
         if (!this.inGround && this.getWorld().isClient) {
             this.getWorld().addParticle(
                     ParticleTypes.END_ROD,
@@ -125,16 +140,23 @@ public class UpgradeableTridentEntity extends CustomTridentEntity {
 
         super.onEntityHit(entityHitResult);
 
-        // Mark as dealt damage to stop targeting
+        // Mark as dealt damage
         this.dealtDamage = true;
 
-        // Start return behavior if it has loyalty
-        if (owner instanceof PlayerEntity && this.getWorld() instanceof ServerWorld serverWorld) {
-            int loyaltyLevel = MathHelper.clamp(EnchantmentHelper.getTridentReturnAcceleration(serverWorld, this.getItemStack(), this), 0, 127);
-            if (loyaltyLevel > 0) {
-                this.startPulling();
+        // Handle loyalty return
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            if (owner instanceof PlayerEntity) {
+                int loyaltyLevel = EnchantmentHelper.getTridentReturnAcceleration(serverWorld, this.getItemStack(), this);
+                if (loyaltyLevel > 0) {
+                    this.startPulling();
+                }
             }
         }
+    }
+
+    @Override
+    public boolean hasNoGravity() {
+        return this.dealtDamage || super.hasNoGravity();
     }
 
     @Override
