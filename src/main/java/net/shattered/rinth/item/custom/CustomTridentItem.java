@@ -8,6 +8,7 @@ import net.minecraft.component.type.ToolComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
@@ -178,6 +179,8 @@ public abstract class CustomTridentItem extends Item implements ProjectileItem, 
     public boolean isEnchantable(ItemStack stack) {
         return true;
     }
+
+    public abstract void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected);
 
     @Override
     public boolean canBeEnchanted(ItemStack itemStack, Enchantment enchantment) {

@@ -2,6 +2,7 @@ package net.shattered.rinth.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.*;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -80,6 +81,18 @@ public class ModItems {
                     .attributeModifiers(TridentItem.createAttributeModifiers())
                     .component(DataComponentTypes.TOOL, TridentItem.createToolComponent())
                     .fireproof()) {
+                /**
+                 * @param stack
+                 * @param world
+                 * @param entity
+                 * @param slot
+                 * @param selected
+                 */
+                @Override
+                public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+
+                }
+
                 @Override
                 public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 
