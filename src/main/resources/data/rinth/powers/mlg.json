@@ -1,0 +1,14 @@
+{
+  "hidden": true,
+  "type": "origins:modify_damage_dealt",
+  "damage_condition": {
+    "type": "origins:projectile",
+    "projectile": {
+      "type": "rinth:upgraded_trident"
+    }
+  },
+  "modifier": {
+    "operation": "ADD_VALUE",
+    "amount": 2.0
+  }
+}

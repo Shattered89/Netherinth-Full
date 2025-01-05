@@ -78,7 +78,7 @@ public class ModItems {
             new CustomTridentItem(new Item.Settings()
                     .maxCount(1)
                     .maxDamage(250)
-                    .attributeModifiers(TridentItem.createAttributeModifiers())
+                    .attributeModifiers(CustomTridentItem.createAttributeModifiers())
                     .component(DataComponentTypes.TOOL, TridentItem.createToolComponent())
                     .fireproof()) {
                 /**
@@ -104,7 +104,7 @@ public class ModItems {
             new UpgradedTridentItem(new Item.Settings()
                     .maxCount(1)
                     .maxDamage(500)
-                    .attributeModifiers(TridentItem.createAttributeModifiers())
+                    .attributeModifiers(UpgradedTridentItem.createAttributeModifiers())
                     .component(DataComponentTypes.TOOL, TridentItem.createToolComponent())
                     .fireproof()));
 

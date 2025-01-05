@@ -3,14 +3,19 @@ package net.shattered.rinth.entity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.shattered.rinth.item.custom.TridentCollectorData;
+// Add this
+
 
 import java.util.List;
 
@@ -46,7 +51,6 @@ public class UpgradeableTridentEntity extends CustomTridentEntity {
 
     @Override
     protected void initDataTracker() {
-
     }
 
     // New method to find which entity the player is looking at
@@ -76,6 +80,34 @@ public class UpgradeableTridentEntity extends CustomTridentEntity {
         }
 
         return closest;
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult hitResult) {
+        Entity entity = hitResult.getEntity();
+        float damage = 10.0F;
+
+        if (entity instanceof LivingEntity target) {
+            float preHitHealth = target.getHealth();
+
+            super.onEntityHit(hitResult);
+
+            if (target.isDead() || target.getHealth() <= 0) {
+                if (!this.getWorld().isClient) {
+                    this.getWorld().getServer().execute(() -> {
+                        List<ItemEntity> drops = this.getWorld().getEntitiesByClass(
+                                ItemEntity.class,
+                                target.getBoundingBox().expand(2.0),
+                                item -> item.age <= 1  // Changed from getAge() to age
+                        );
+
+                        TridentCollectorData.storeDrops(drops, this.getItemStack());
+                    });
+                }
+            }
+        }
+
+        this.dealtDamage = true;
     }
 
     @Override

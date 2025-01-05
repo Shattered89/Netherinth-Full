@@ -9,6 +9,7 @@ import net.shattered.rinth.command.RecallTridentCommand;
 import net.shattered.rinth.command.SpreadNetherCommand;
 import net.shattered.rinth.component.ModDataComponentTypes;
 import net.shattered.rinth.entity.ModEntityTypes;
+import net.shattered.rinth.event.PlayerDeathHandler;
 import net.shattered.rinth.item.ModItemGroups;
 import net.shattered.rinth.item.ModItems;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class Netherinth implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		ModEntityTypes.registerModEntities();
+		PlayerDeathHandler.register();
 
 		ModDataComponentTypes.registerModDataComponentTypes();
 
@@ -39,8 +41,8 @@ public class Netherinth implements ModInitializer {
 			SpreadNetherCommand.register(dispatcher, registryAccess, environment);
 		});
 
-
-
+		LOGGER.info("Netherinth initialized");
+		LOGGER.info("Shattered Wins :)");
 
 	}
 }

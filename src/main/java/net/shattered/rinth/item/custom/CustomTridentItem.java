@@ -41,7 +41,7 @@ import java.util.List;
 
 public abstract class CustomTridentItem extends Item implements ProjectileItem, Dropped {
     public static final int MIN_DRAW_DURATION = 10;
-    public static final float ATTACK_DAMAGE = 18.0F;
+    public static final float ATTACK_DAMAGE = 9.0F;
     public static final float THROW_SPEED = 2.5F;
 
     public CustomTridentItem(Item.Settings settings) {

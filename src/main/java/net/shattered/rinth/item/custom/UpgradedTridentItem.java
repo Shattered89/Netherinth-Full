@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -38,8 +39,9 @@ import java.util.List;
 
 public class UpgradedTridentItem extends CustomTridentItem {
     // Constants for base weapon stats
-    private static final float UPGRADED_ATTACK_DAMAGE = 13.0F;  // Increased to compensate
+    private static final float UPGRADED_ATTACK_DAMAGE = 16.0F;  // Increased to compensate
     private static final float UPGRADED_ATTACK_SPEED = -2.7F;   // This gives 1.3 attack speed (4.0 - 2.7 = 1.3)
+    private static final float THROW_SPEED = 2.5F;
 
     public UpgradedTridentItem(Item.Settings settings) {
         super(settings.maxDamage(500));
@@ -273,11 +275,26 @@ public class UpgradedTridentItem extends CustomTridentItem {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 
+        if (world.getTime() % 20 == 0) {
+            if (entity instanceof PlayerEntity player) {
+                if (TridentCollectorData.hasStoredItems(stack)) {
+                    System.out.println("Found stored items, attempting to return");
+                    TridentCollectorData.returnItemsToPlayer(player, stack);
+                }
+            }
+        }
+
         // Check if enchantments need to be applied
         if (EnchantmentHelper.getEnchantments(stack).isEmpty()) {
             applyDefaultEnchantments(stack, world);
         }
 
+        // Check if enchantments need to be applied
+        if (EnchantmentHelper.getEnchantments(stack).isEmpty()) {
+            applyDefaultEnchantments(stack, world);
+        }
+
+        // Targeting particle effects
         if (selected && entity instanceof PlayerEntity player) {
             // Only show targeting effect when holding the trident
             LivingEntity target = UpgradeableTridentEntity.getTargetedEntity(player, world);
@@ -306,6 +323,7 @@ public class UpgradedTridentItem extends CustomTridentItem {
         }
     }
 
+
     @Override
     public boolean canBeEnchanted(ItemStack itemStack, Enchantment enchantment) {
         return true; // Allow all enchantments
@@ -320,5 +338,12 @@ public class UpgradedTridentItem extends CustomTridentItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
 
+    }
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
+        // Add custom tooltip
+        tooltip.add(Text.of("Upgraded Trident"));
+        tooltip.add(Text.of("Deals increased damage and has unique abilities"));
+        TridentCollectorData.addCooldownTooltip(stack, tooltip);
     }
 }
